@@ -1,0 +1,38 @@
+# Ignora archivos temporales creados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignora archivos de configuración específicos de IDEs y editores
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln.docstates
+
+# Ignora archivos y directorios generados por el lenguaje de programación
+# (por ejemplo, archivos compilados, directorios de paquetes)
+node_modules/
+bin/
+obj/
+
+# Ignora archivos de registro y archivos generados
+*.log
+log/
+logs/
+*.swp
+*.swo
+*.swn
+*.swm
+*.bak
+
+# Ignora archivos y directorios que contienen información de credenciales
+secrets/
+.env
+
+# Ignora archivos de construcción y resultados de pruebas
+/dist/
+/build/
+/out/
+/.tmp/
+/coverage/
+/.nyc_output/
