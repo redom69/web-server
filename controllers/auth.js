@@ -5,7 +5,7 @@ const jwt = require("../utils/jwt");
 const { use } = require("../app");
 
 async function register(req, res) {
-    const { firstName, lastName, email, password, active, avatar } = req.body;
+    const { firstName, lastName, email, password } = req.body;
 
     if (!email || !password) {
         return res.status(400).send("El email y la contraseña son obligatorios");
@@ -20,7 +20,6 @@ async function register(req, res) {
             password: hashedPassword,
             role: "user",
             active: false,
-            avatar
         });
 
         await user.save();
