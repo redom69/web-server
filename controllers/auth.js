@@ -23,7 +23,7 @@ async function register(req, res) {
         });
 
         await user.save();
-        return res.status(201).send({ msg: "Usuario creado correctamente" });
+        return res.status(201).send({ msg: "Usuario registrado correctamente" });
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
             // Email duplicado
