@@ -5,7 +5,7 @@ const jwt = require("../utils/jwt");
 const { use } = require("../app");
 
 async function register(req, res) {
-    const { firstName, lastName, email, password, role, active, avatar } = req.body;
+    const { firstName, lastName, email, password, active, avatar } = req.body;
 
     if (!email || !password) {
         return res.status(400).send("El email y la contraseña son obligatorios");
@@ -18,8 +18,8 @@ async function register(req, res) {
             lastName,
             email: email.toLowerCase(),
             password: hashedPassword,
-            role,
-            active,
+            role: "user",
+            active: false,
             avatar
         });
 
@@ -40,7 +40,7 @@ async function login(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).send("El email y la contraseña son obligatorios");
+        return res.status(400).send({ msg: "El email y la contraseña son obligatorios" });
     }
 
     try {
@@ -48,16 +48,16 @@ async function login(req, res) {
         const user = await User.findOne({ email: emailToLower });
 
         if (!user) {
-            return res.status(401).send("El email no está registrado");
+            return res.status(401).send({ msg: "El email no está registrado" });
         }
 
         bcrypt.compare(password, user.password, (bcryptError, check) => {
             if (bcryptError) {
-                return res.status(500).send("Error del servidor");
+                return res.status(500).send({ msg: "Error del servidor" });
             } else if (!check) {
-                return res.status(401).send("Usuario o contraseña incorrecta");
+                return res.status(401).send({ msg: "Usuario o contraseña incorrecta" });
             } else if (!user.active) {
-                return res.status(403).send("Usuario no autorizado");
+                return res.status(403).send({ msg: "Usuario no autorizado" });
             } else {
                 return res.status(200).send({
                     access: jwt.createAccessToken(user),
@@ -66,7 +66,7 @@ async function login(req, res) {
             }
         });
     } catch (error) {
-        return res.status(500).send("Error del servidor");
+        return res.status(500).send({ msg: "Error del servidor" });
     }
 }
 
@@ -78,14 +78,14 @@ async function refreshAccesToken(req, res) {
     try {
         const user = await User.findOne({ _id: user_id });
         if (!user) {
-            return res.status(500).send("Error del servidor");
+            return res.status(500).send({ msg: "Error del servidor" });
         } else {
             return res.status(200).send({
                 accessToken: jwt.createAccessToken(user),
             });
         }
     } catch (error) {
-        return res.status(500).send("Error del servidor");
+        return res.status(500).send({ msg: "Error del servidor" });
     }
 }
 

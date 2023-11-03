@@ -31,14 +31,13 @@ async function createUsers(req, res) {
     const { email, password } = req.body
     const salt = bcrypt.genSaltSync(10)
     const hasPassword = bcrypt.hashSync(password, salt)
+    const user = new User({ ...req.body, active: false, password: hasPassword })
 
     try {
 
         if (!email || !password) {
             return res.status(400).send({ msg: "El email y la contraseña son obligatorios" });
         }
-
-        const user = new User({ ...req.body, active: false, password: hasPassword })
 
         if (req.files.avatar) {
             const imageName = image.getFilePath(req.files.avatar)
@@ -78,7 +77,7 @@ async function updateUsers(req, res) {
     if (updated) {
         return res.status(200).send(updated);
     } else {
-        return res.status(400).send("Error al actualizar usuario");
+        return res.status(400).send({ msg: "Error al actualizar usuario" });
     }
 }
 
@@ -89,7 +88,7 @@ async function deleteUsers(req, res) {
     if (deleted) {
         return res.status(200).send(deleted);
     } else {
-        return res.status(400).send("Error al borrar usuario");
+        return res.status(400).send({ msg: "Error al borrar usuario" });
     }
 }
 
