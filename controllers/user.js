@@ -35,7 +35,7 @@ async function createUsers(req, res) {
     try {
 
         if (!email || !password) {
-            return res.status(400).send("El email y la contraseña son obligatorios");
+            return res.status(400).send({ msg: "El email y la contraseña son obligatorios" });
         }
 
         const user = new User({ ...req.body, active: false, password: hasPassword })
@@ -49,9 +49,9 @@ async function createUsers(req, res) {
         return res.status(201).send(user);
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
-            return res.status(400).send("El email ya está en uso");
+            return res.status(400).send({ msg: "El email ya está en uso" });
         } else {
-            return res.status(500).send("Error al crear usuario");
+            return res.status(500).send({ msg: "Error al crear usuario" });
         }
     }
 }

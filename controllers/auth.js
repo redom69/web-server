@@ -24,14 +24,14 @@ async function register(req, res) {
         });
 
         await user.save();
-        return res.status(201).send("Usuario creado correctamente");
+        return res.status(201).send({ msg: "Usuario creado correctamente" });
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
             // Email duplicado
-            return res.status(400).send("El email ya está en uso");
+            return res.status(400).send({ msg: "El email ya está en uso" });
         } else {
             // Otro error
-            return res.status(500).send("Error al crear usuario");
+            return res.status(500).send({ msg: "Error al crear usuario" });
         }
     }
 }
